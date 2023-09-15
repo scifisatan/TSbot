@@ -10,14 +10,15 @@
   },
   "name": "tsbudget",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "main.ts",
   "scripts": {
     "dev":"npx nodemon ./main.ts",
+    "build":"tsc ./main.ts --outDir build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start":"node ./build/main.js"
   },
    "engines" : {
-    "node" : "^10"
+    "node" : ">=16.0.0"
   },
   "author": "",
   "license": "ISC",
