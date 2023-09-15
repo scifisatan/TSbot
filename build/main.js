@@ -38,8 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var TelegramBot = require('node-telegram-bot-api');
 var budget = require("./budget");
-var token = '6627948400:AAHHQXGJFPmrIYE5_qyrpmRc3xl3XMmo4X8';
+var express_1 = require("express");
+var DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8';
+var PROD_TOKEN = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk';
+var token = PROD_TOKEN;
 var bot = new TelegramBot(token, { polling: true });
+var app = (0, express_1.default)();
 var opts = {
     reply_markup: {
         keyboard: [
@@ -72,7 +76,7 @@ bot.onText(/\/start/, function (msg) { return __awaiter(void 0, void 0, void 0, 
         switch (_e.label) {
             case 0:
                 chatId = msg.chat.id;
-                if (!((_a = msg === null || msg === void 0 ? void 0 : msg.from) === null || _a === void 0 ? void 0 : _a.username)) return [3 /*break*/, 6];
+                if (!((_a = msg === null || msg === void 0 ? void 0 : msg.from) === null || _a === void 0 ? void 0 : _a.username)) return [3 /*break*/, 7];
                 username = (_b = msg === null || msg === void 0 ? void 0 : msg.from) === null || _b === void 0 ? void 0 : _b.username;
                 return [4 /*yield*/, budget.checkUser(username)];
             case 1:
@@ -88,31 +92,46 @@ bot.onText(/\/start/, function (msg) { return __awaiter(void 0, void 0, void 0, 
             case 5:
                 _e.sent();
                 _e.label = 6;
-            case 6: return [2 /*return*/];
+            case 6: return [3 /*break*/, 9];
+            case 7: return [4 /*yield*/, bot.sendMessage(chatId, "It seems you have not set your username in telgram, please set it and try again")];
+            case 8:
+                _e.sent();
+                _e.label = 9;
+            case 9: return [2 /*return*/];
         }
     });
 }); });
 bot.onText(/Check My Balance/, function (msg) { return __awaiter(void 0, void 0, void 0, function () {
-    var chatId, _a, _b, _c, _d;
-    var _e, _f;
-    return __generator(this, function (_g) {
-        switch (_g.label) {
+    var chatId, _a, _b, _c, _d, _e;
+    var _f, _g;
+    return __generator(this, function (_h) {
+        switch (_h.label) {
             case 0:
                 chatId = msg.chat.id;
-                if (!((_e = msg === null || msg === void 0 ? void 0 : msg.from) === null || _e === void 0 ? void 0 : _e.username)) return [3 /*break*/, 3];
+                _h.label = 1;
+            case 1:
+                _h.trys.push([1, 7, , 9]);
+                if (!((_f = msg === null || msg === void 0 ? void 0 : msg.from) === null || _f === void 0 ? void 0 : _f.username)) return [3 /*break*/, 4];
                 _b = (_a = bot).sendMessage;
                 _c = [chatId];
                 _d = "Your balance is ".concat;
-                return [4 /*yield*/, budget.showBalance((_f = msg === null || msg === void 0 ? void 0 : msg.from) === null || _f === void 0 ? void 0 : _f.username)];
-            case 1: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.apply("Your balance is ", [_g.sent()])]))];
-            case 2:
-                _g.sent();
-                return [3 /*break*/, 5];
-            case 3: return [4 /*yield*/, bot.sendMessage(chatId, "IDK mannnn")];
-            case 4:
-                _g.sent();
-                _g.label = 5;
-            case 5: return [2 /*return*/];
+                return [4 /*yield*/, budget.showBalance((_g = msg === null || msg === void 0 ? void 0 : msg.from) === null || _g === void 0 ? void 0 : _g.username)];
+            case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.apply("Your balance is ", [_h.sent()])]))];
+            case 3:
+                _h.sent();
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, bot.sendMessage(chatId, "You should start with /start")];
+            case 5:
+                _h.sent();
+                _h.label = 6;
+            case 6: return [3 /*break*/, 9];
+            case 7:
+                _e = _h.sent();
+                return [4 /*yield*/, bot.sendMessage(chatId, "You should start with /start")];
+            case 8:
+                _h.sent();
+                return [3 /*break*/, 9];
+            case 9: return [2 /*return*/];
         }
     });
 }); });
@@ -133,37 +152,41 @@ bot.onText(/Add Expense/, function (msg) { return __awaiter(void 0, void 0, void
             case 1:
                 contentMessage = _c.sent();
                 listenerReply = (function (replyHandler) { return __awaiter(void 0, void 0, void 0, function () {
-                    var amount, description, _a, _b, _c, _d;
-                    return __generator(this, function (_e) {
-                        switch (_e.label) {
+                    var amount, description, descriptionMsg;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
                             case 0:
                                 bot.removeReplyListener(listenerReply);
                                 if (!(replyHandler.text === "/cancel")) return [3 /*break*/, 2];
                                 return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, "Canceled", opts)];
                             case 1:
-                                _e.sent();
+                                _a.sent();
                                 return [2 /*return*/];
                             case 2:
-                                if (!(replyHandler === null || replyHandler === void 0 ? void 0 : replyHandler.text)) return [3 /*break*/, 4];
+                                if (!(replyHandler === null || replyHandler === void 0 ? void 0 : replyHandler.text)) return [3 /*break*/, 7];
                                 amount = parseInt(replyHandler.text.split(" ")[0]);
-                                description = replyHandler.text.split(" ").splice(1).join(" ");
-                                return [4 /*yield*/, budget.addExpense(username, amount, description)];
+                                if (!isNaN(amount)) return [3 /*break*/, 4];
+                                return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, "Please enter a number", opts)];
                             case 3:
-                                _e.sent();
-                                _e.label = 4;
-                            case 4:
-                                _b = (_a = bot).sendMessage;
-                                _c = [replyHandler.chat.id];
-                                _d = "Your balance is ".concat;
-                                return [4 /*yield*/, budget.showBalance(username)];
-                            case 5: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.apply("Your balance is ", [_e.sent()]), opts]))];
-                            case 6:
-                                _e.sent();
+                                _a.sent();
                                 return [2 /*return*/];
+                            case 4:
+                                description = replyHandler.text.split(" ").splice(1).join(" ");
+                                descriptionMsg = description == "" ? "Expense added with no note" : "Expense has been added with note `".concat(description, "`");
+                                return [4 /*yield*/, budget.addExpense(username, amount, description)];
+                            case 5:
+                                _a.sent();
+                                return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts)];
+                            case 6:
+                                _a.sent();
+                                _a.label = 7;
+                            case 7: return [2 /*return*/];
                         }
                     });
                 }); });
-                bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
+                return [4 /*yield*/, bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply)];
+            case 2:
+                _c.sent();
                 return [2 /*return*/];
         }
     });
@@ -185,56 +208,79 @@ bot.onText(/Add Income/, function (msg) { return __awaiter(void 0, void 0, void 
             case 1:
                 contentMessage = _c.sent();
                 listenerReply = (function (replyHandler) { return __awaiter(void 0, void 0, void 0, function () {
-                    var amount, description, _a, _b, _c, _d;
-                    return __generator(this, function (_e) {
-                        switch (_e.label) {
+                    var amount, description, descriptionMsg;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
                             case 0:
                                 bot.removeReplyListener(listenerReply);
                                 if (!(replyHandler.text === "/cancel")) return [3 /*break*/, 2];
                                 return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, "Canceled", opts)];
                             case 1:
-                                _e.sent();
+                                _a.sent();
                                 return [2 /*return*/];
                             case 2:
-                                if (!(replyHandler === null || replyHandler === void 0 ? void 0 : replyHandler.text)) return [3 /*break*/, 4];
+                                if (!(replyHandler === null || replyHandler === void 0 ? void 0 : replyHandler.text)) return [3 /*break*/, 7];
                                 amount = parseInt(replyHandler.text.split(" ")[0]);
-                                description = replyHandler.text.split(" ").splice(1).join(" ");
-                                return [4 /*yield*/, budget.addIncome(username, amount, description)];
+                                if (!isNaN(amount)) return [3 /*break*/, 4];
+                                return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, "Please enter a number", opts)];
                             case 3:
-                                _e.sent();
-                                _e.label = 4;
-                            case 4:
-                                _b = (_a = bot).sendMessage;
-                                _c = [replyHandler.chat.id];
-                                _d = "Your balance is ".concat;
-                                return [4 /*yield*/, budget.showBalance(username)];
-                            case 5: return [4 /*yield*/, _b.apply(_a, _c.concat([_d.apply("Your balance is ", [_e.sent()]), opts]))];
-                            case 6:
-                                _e.sent();
+                                _a.sent();
                                 return [2 /*return*/];
+                            case 4:
+                                description = replyHandler.text.split(" ").splice(1).join(" ");
+                                descriptionMsg = description == "" ? "Income added with no note" : "Income has been added with note `".concat(description, "`");
+                                return [4 /*yield*/, budget.addIncome(username, amount, description)];
+                            case 5:
+                                _a.sent();
+                                return [4 /*yield*/, bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts)];
+                            case 6:
+                                _a.sent();
+                                _a.label = 7;
+                            case 7: return [2 /*return*/];
                         }
                     });
                 }); });
-                bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
+                return [4 /*yield*/, bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply)];
+            case 2:
+                _c.sent();
                 return [2 /*return*/];
         }
     });
 }); });
 bot.onText(/Show Transaction/, function (msg) { return __awaiter(void 0, void 0, void 0, function () {
-    var username, transactions, message;
-    var _a;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var username, transactions, message, _a;
+    var _b, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                username = ((_a = msg === null || msg === void 0 ? void 0 : msg.from) === null || _a === void 0 ? void 0 : _a.username) || "";
-                return [4 /*yield*/, budget.showTransaction(username)];
+                username = ((_b = msg === null || msg === void 0 ? void 0 : msg.from) === null || _b === void 0 ? void 0 : _b.username) ? (_c = msg === null || msg === void 0 ? void 0 : msg.from) === null || _c === void 0 ? void 0 : _c.username : "";
+                _d.label = 1;
             case 1:
-                transactions = _b.sent();
+                _d.trys.push([1, 7, , 9]);
+                if (!(username === "")) return [3 /*break*/, 3];
+                return [4 /*yield*/, bot.sendMessage(msg.chat.id, "You should start with /start")];
+            case 2:
+                _d.sent();
+                return [3 /*break*/, 6];
+            case 3: return [4 /*yield*/, budget.showTransaction(username)];
+            case 4:
+                transactions = _d.sent();
                 message = transactions;
                 return [4 /*yield*/, bot.sendMessage(msg.chat.id, JSON.stringify(message))];
-            case 2:
-                _b.sent();
-                return [2 /*return*/];
+            case 5:
+                _d.sent();
+                _d.label = 6;
+            case 6: return [3 /*break*/, 9];
+            case 7:
+                _a = _d.sent();
+                return [4 /*yield*/, bot.sendMessage(msg.chat.id, "You have not entered any transaction yet")];
+            case 8:
+                _d.sent();
+                return [3 /*break*/, 9];
+            case 9: return [2 /*return*/];
         }
     });
 }); });
+app.listen(8080, '0.0.0.0', function () {
+    console.log("Express server is listening at");
+});

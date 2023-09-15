@@ -2,12 +2,14 @@ const TelegramBot = require('node-telegram-bot-api');
 import { Message, SendMessageOptions } from "node-telegram-bot-api";
 
 import * as budget from "./budget";
+import http from "http";
+
 
 const DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8'
 const PROD_TOKEN = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
 
-const token = PROD_TOKEN;
-const bot: typeof TelegramBot = new TelegramBot(token, { polling: true });
+const token = DEV_TOKEN;
+const bot = new TelegramBot(token, { polling: false });
 
 const opts: SendMessageOptions = {
     reply_markup: {
@@ -56,13 +58,15 @@ bot.onText(/\/start/, async (msg: Message) => {
 
 bot.onText(/Check My Balance/, async (msg: Message) => {
     const chatId = msg.chat.id;
-   try{ if (msg?.from?.username) {
-        await bot.sendMessage(chatId, `Your balance is ${await budget.showBalance(msg?.from?.username)}`);
+    try {
+        if (msg?.from?.username) {
+            await bot.sendMessage(chatId, `Your balance is ${await budget.showBalance(msg?.from?.username)}`);
+        }
+        else {
+            await bot.sendMessage(chatId, `You should start with /start`);
+        }
     }
-    else {
-        await bot.sendMessage(chatId, `You should start with /start`);
-    }}
-    catch{
+    catch {
         await bot.sendMessage(chatId, `You should start with /start`);
     }
 });
@@ -92,9 +96,9 @@ bot.onText(/Add Expense/, async (msg: Message) => {
                 return;
             }
             let description = replyHandler.text.split(" ").splice(1).join(" ");
-            let descriptionMsg = description==""? "Expense added with no note": `Expense has been added with note \`${description}\``
+            let descriptionMsg = description == "" ? "Expense added with no note" : `Expense has been added with note \`${description}\``
             await budget.addExpense(username, amount, description);
-            
+
             await bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts);
         }
 
@@ -111,7 +115,7 @@ bot.onText(/Add Income/, async (msg: Message) => {
     }
     let contentMessage = await bot.sendMessage(msg.chat.id, "Enter the amount and note ", {
         "reply_markup": {
-            "force_reply": true 
+            "force_reply": true
         }
     });
     listenerReply = (async (replyHandler: Message) => {
@@ -127,7 +131,7 @@ bot.onText(/Add Income/, async (msg: Message) => {
                 return;
             }
             let description = replyHandler.text.split(" ").splice(1).join(" ");
-            let descriptionMsg = description==""? "Income added with no note": `Income has been added with note \`${description}\``
+            let descriptionMsg = description == "" ? "Income added with no note" : `Income has been added with note \`${description}\``
             await budget.addIncome(username, amount, description);
 
             await bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts);
@@ -139,17 +143,24 @@ bot.onText(/Add Income/, async (msg: Message) => {
 
 bot.onText(/Show Transaction/, async (msg: Message) => {
     let username = msg?.from?.username ? msg?.from?.username : "";
-   try{ if (username === "") {
-        await bot.sendMessage(msg.chat.id, "You should start with /start");
+    try {
+        if (username === "") {
+            await bot.sendMessage(msg.chat.id, "You should start with /start");
+        }
+        else {
+            let transactions = await budget.showTransaction(username);
+            let message = transactions;
+            await bot.sendMessage(msg.chat.id, JSON.stringify(message));
+        }
     }
-    else{
-    let transactions = await budget.showTransaction(username);
-    let message = transactions;
-    await bot.sendMessage(msg.chat.id, JSON.stringify(message));
-    }}
-    catch{
+    catch {
         await bot.sendMessage(msg.chat.id, "You have not entered any transaction yet");
     }
 });
 
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('okay');
+  });
 
+server.listen(8080, '0.0.0.0',bot.startPolling());
