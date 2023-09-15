@@ -18,7 +18,7 @@
     "dev": "npx nodemon ./src/main.ts",
     "build": "tsc ./src/main.ts --outDir build",
     "start": "node ./build/main.js",
-    "push:prod": "git add . && git commit -mulalaala && git push clever master"
+    "git": "git add . && git commit -mulalaala && git push"
   },
   "engines": {
     "node": ">=16.0.0"
