@@ -5,10 +5,10 @@ import * as budget from "./budget";
 import * as http from "http";
 
 
-const DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8'
+// const DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8'
 const PROD_TOKEN = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
 
-const token = DEV_TOKEN;
+const token = PROD_TOKEN;
 const bot = new TelegramBot(token, { polling: false });
 
 const opts: SendMessageOptions = {
