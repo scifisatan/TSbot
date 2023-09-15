@@ -1,9 +1,12 @@
 const TelegramBot = require('node-telegram-bot-api');
 import { Message, SendMessageOptions } from "node-telegram-bot-api";
-import * as budget from "./budget";
-import { create } from "ts-node";
 
-const token = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
+import * as budget from "./budget";
+
+const DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8'
+const PROD_TOKEN = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
+
+const token = PROD_TOKEN;
 const bot: typeof TelegramBot = new TelegramBot(token, { polling: true });
 
 const opts: SendMessageOptions = {
@@ -84,13 +87,19 @@ bot.onText(/Add Expense/, async (msg: Message) => {
         }
         if (replyHandler?.text) {
             let amount = parseInt(replyHandler.text.split(" ")[0]);
+            if (isNaN(amount)) {
+                await bot.sendMessage(replyHandler.chat.id, "Please enter a number", opts);
+                return;
+            }
             let description = replyHandler.text.split(" ").splice(1).join(" ");
+            let descriptionMsg = description==""? "Expense added with no note": `Expense has been added with note \`${description}\``
             await budget.addExpense(username, amount, description);
+            
+            await bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts);
         }
-        await bot.sendMessage(replyHandler.chat.id, `Your balance is ${await budget.showBalance(username)}`, opts);
 
     });
-    bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
+    await bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
 
 });
 
@@ -113,13 +122,18 @@ bot.onText(/Add Income/, async (msg: Message) => {
         }
         if (replyHandler?.text) {
             let amount = parseInt(replyHandler.text.split(" ")[0]);
+            if (isNaN(amount)) {
+                await bot.sendMessage(replyHandler.chat.id, "Please enter a number", opts);
+                return;
+            }
             let description = replyHandler.text.split(" ").splice(1).join(" ");
+            let descriptionMsg = description==""? "Income added with no note": `Income has been added with note \`${description}\``
             await budget.addIncome(username, amount, description);
-        }
-        await bot.sendMessage(replyHandler.chat.id, `Your balance is ${await budget.showBalance(username)}`, opts);
 
+            await bot.sendMessage(replyHandler.chat.id, descriptionMsg, opts);
+        }
     });
-    bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
+    await bot.onReplyToMessage(contentMessage.chat.id, contentMessage.message_id, listenerReply);
 });
 
 
@@ -134,7 +148,7 @@ bot.onText(/Show Transaction/, async (msg: Message) => {
     await bot.sendMessage(msg.chat.id, JSON.stringify(message));
     }}
     catch{
-        await bot.sendMessage(msg.chat.id, "You should start with /start");
+        await bot.sendMessage(msg.chat.id, "You have not entered any transaction yet");
     }
 });
 
