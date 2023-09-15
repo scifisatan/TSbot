@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 import { Message, SendMessageOptions } from "node-telegram-bot-api";
 import * as budget from "./budget";
 
-const token = '6627948400:AAHHQXGJFPmrIYE5_qyrpmRc3xl3XMmo4X8'
+const token = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
 const bot: typeof TelegramBot = new TelegramBot(token, { polling: true });
 
 const opts: SendMessageOptions = {
@@ -44,6 +44,9 @@ bot.onText(/\/start/, async (msg: Message) => {
             await budget.createUser(msg?.from?.username);
             await bot.sendMessage(chatId, `Welcome to your budget tracker ${msg?.from?.username}`, opts);
         }
+    }
+    else {
+        await bot.sendMessage(chatId, `It seems you have not set your username in telgram, please set it and try again`);
     }
 });
 
