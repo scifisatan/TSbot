@@ -1,0 +1,52 @@
+{
+    "scifisatan": {
+        "balance": 1011,
+        "transactions": {
+            "Fri Sep 15 2023 01:21:56 GMT+0545 (Nepal Time)": {
+                "amount": 1000,
+                "type": "income",
+                "description": "huhuuhuh"
+            },
+            "Fri Sep 15 2023 01:22:02 GMT+0545 (Nepal Time)}": {
+                "amount": 30,
+                "type": "expense",
+                "description": "aajdfs"
+            },
+            "Fri Sep 15 2023 01:30:24 GMT+0545 (Nepal Time)": {
+                "amount": 10,
+                "type": "income",
+                "description": "lol"
+            },
+            "Fri Sep 15 2023 01:30:29 GMT+0545 (Nepal Time)}": {
+                "amount": 20,
+                "type": "expense",
+                "description": "lmfaooooooo"
+            },
+            "Fri Sep 15 2023 01:36:21 GMT+0545 (Nepal Time)": {
+                "amount": 1,
+                "type": "income",
+                "description": "esf"
+            },
+            "Fri Sep 15 2023 01:41:47 GMT+0545 (Nepal Time)": {
+                "amount": 10,
+                "type": "income",
+                "description": "huhu"
+            },
+            "Fri Sep 15 2023 01:41:55 GMT+0545 (Nepal Time)}": {
+                "amount": 20,
+                "type": "expense",
+                "description": "haha"
+            },
+            "Fri Sep 15 2023 01:42:35 GMT+0545 (Nepal Time)": {
+                "amount": 10,
+                "type": "income",
+                "description": "huhu"
+            },
+            "Fri Sep 15 2023 01:42:41 GMT+0545 (Nepal Time)}": {
+                "amount": 40,
+                "type": "expense",
+                "description": "lalala"
+            }
+        }
+    }
+}
