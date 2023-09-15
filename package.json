@@ -15,8 +15,8 @@
   "version": "1.0.0",
   "main": "main.ts",
   "scripts": {
-    "dev": "npx nodemon ./main.ts",
-    "build": "tsc ./main.ts --outDir build",
+    "dev": "npx nodemon ./src/main.ts",
+    "build": "tsc ./src/main.ts --outDir ../build",
     "start": "node ./build/main.js",
     "push": "git add . && git commit -mulalaala && git push clever master"
   },
