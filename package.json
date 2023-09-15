@@ -15,7 +15,8 @@
     "dev":"npx nodemon ./main.ts",
     "build":"tsc ./main.ts --outDir build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node ./build/main.js"
+    "start":"node ./build/main.js",
+    "push" : "git add . && git commit -mulalaala && git push clever master"
   },
    "engines" : {
     "node" : ">=16.0.0"

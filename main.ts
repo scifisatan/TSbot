@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 import { Message, SendMessageOptions } from "node-telegram-bot-api";
 import * as budget from "./budget";
+import { create } from "ts-node";
 
 const token = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk'
 const bot: typeof TelegramBot = new TelegramBot(token, { polling: true });
@@ -52,11 +53,14 @@ bot.onText(/\/start/, async (msg: Message) => {
 
 bot.onText(/Check My Balance/, async (msg: Message) => {
     const chatId = msg.chat.id;
-    if (msg?.from?.username) {
+   try{ if (msg?.from?.username) {
         await bot.sendMessage(chatId, `Your balance is ${await budget.showBalance(msg?.from?.username)}`);
     }
     else {
-        await bot.sendMessage(chatId, `IDK mannnn`);
+        await bot.sendMessage(chatId, `You should start with /start`);
+    }}
+    catch{
+        await bot.sendMessage(chatId, `You should start with /start`);
     }
 });
 
@@ -98,7 +102,7 @@ bot.onText(/Add Income/, async (msg: Message) => {
     }
     let contentMessage = await bot.sendMessage(msg.chat.id, "Enter the amount and note ", {
         "reply_markup": {
-            "force_reply": true
+            "force_reply": true 
         }
     });
     listenerReply = (async (replyHandler: Message) => {
@@ -120,10 +124,18 @@ bot.onText(/Add Income/, async (msg: Message) => {
 
 
 bot.onText(/Show Transaction/, async (msg: Message) => {
-    let username = msg?.from?.username || "";
+    let username = msg?.from?.username ? msg?.from?.username : "";
+   try{ if (username === "") {
+        await bot.sendMessage(msg.chat.id, "You should start with /start");
+    }
+    else{
     let transactions = await budget.showTransaction(username);
     let message = transactions;
     await bot.sendMessage(msg.chat.id, JSON.stringify(message));
+    }}
+    catch{
+        await bot.sendMessage(msg.chat.id, "You should start with /start");
+    }
 });
 
 
