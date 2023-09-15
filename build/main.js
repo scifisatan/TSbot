@@ -38,12 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var TelegramBot = require('node-telegram-bot-api');
 var budget = require("./budget");
-var express_1 = require("express");
+var http = require("http");
 var DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8';
 var PROD_TOKEN = '6627948400:AAFQJlbPYjmFhqWzkg0ZTlv0IIWrz2o3BRk';
-var token = PROD_TOKEN;
-var bot = new TelegramBot(token, { polling: true });
-var app = (0, express_1.default)();
+var token = DEV_TOKEN;
+var bot = new TelegramBot(token, { polling: false });
 var opts = {
     reply_markup: {
         keyboard: [
@@ -281,6 +280,8 @@ bot.onText(/Show Transaction/, function (msg) { return __awaiter(void 0, void 0,
         }
     });
 }); });
-app.listen(8080, '0.0.0.0', function () {
-    console.log("Express server is listening at");
+var server = http.createServer(function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('okay');
 });
+server.listen(8080, '0.0.0.0', bot.startPolling());

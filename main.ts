@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 import { Message, SendMessageOptions } from "node-telegram-bot-api";
 
 import * as budget from "./budget";
-import http from "http";
+import * as http from "http";
 
 
 const DEV_TOKEN = '6572699348:AAHlp4wUlTVDvx89z8lWHG0-eNKY-WyUwu8'
