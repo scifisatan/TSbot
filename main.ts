@@ -160,7 +160,7 @@ bot.onText(/Show Transaction/, async (msg: Message) => {
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('okay');
+    res.end('https://t.me/coolbudgetbot');
   });
 
 server.listen(8080, '0.0.0.0',bot.startPolling());
